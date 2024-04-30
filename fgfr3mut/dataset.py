@@ -13,11 +13,9 @@ class TCGADataset:
 
     def __init__(self, data_dir: Path, mpp: float = 0.5):
         if mpp == 1.0:
-            # features_dir = data_dir / "features_mpp10"
-            features_dir = data_dir / "mpp_1.0"
+            features_dir = data_dir / "features_mpp10"
         elif mpp == 0.5:
-            # features_dir = data_dir / "features"
-            features_dir = data_dir / "mpp_0.5"
+            features_dir = data_dir / "features"
         else:
             raise ValueError("mpp must be either 1.0 or 0.5")
         self.features_paths = list(features_dir.glob("**/features.npy"))
