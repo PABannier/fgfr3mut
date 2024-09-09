@@ -191,21 +191,12 @@ def main(parser_args: Namespace):
     """Run inference."""
     data_dir = Path(parser_args.data_dir)
 
-    print("\n-> Inference at MPP 0.5")
-    predictions_mpp_05, _ = get_predictions_for_mpp(
-        data_dir=data_dir,
-        weights_path=data_dir / "model_weights" / "mpp_05",
-        mpp=0.5,
-    )
-
     print("\n-> Inference at MPP 1.0")
-    predictions_mpp_10, labels = get_predictions_for_mpp(
+    all_preds, labels = get_predictions_for_mpp(
         data_dir=data_dir,
-        weights_path=data_dir / "model_weights" / "mpp_10",
+        weights_path=data_dir / "model_weights",
         mpp=1.0,
     )
-
-    all_preds = pd.concat([predictions_mpp_05, predictions_mpp_10], axis=0)
 
     # Compute evaluation metrics with bootstrapping
     all_preds = compute_metrics(all_preds=all_preds, labels=labels)
