@@ -11,7 +11,7 @@ It provides the user with:
 
 ## Data Availability
 
-We provide a script `download.py` which downloads the Chowder weights of the pre-screening model, as well as the slide features of `TCGA-BLCA` extracted with a private Wide ResNet50 trained on `TCGA-COAD`.
+We provide a script `download.py` which downloads the Chowder weights of the pre-screening model, as well as the slide features of `TCGA-BLCA` extracted with [Bioptimus' H0 extractor](https://github.com/bioptimus/releases/tree/main/models/h-optimus/v0?utm_source=owkin&utm_medium=referral&utm_campaign=h-bioptimus-o).
 
 ## Instructions
 
@@ -32,8 +32,8 @@ pip install .
 
 Then, download the model weights and the TCGA features from [HuggingFace](https://huggingface.co/datasets/PABannier/fgfr3mut):
 
-```bash
-python download.py --out_dir <OUTPUT_DIR>
+```shell
+$ python download.py --out_dir <OUTPUT_DIR>
 ```
 
 Note that the `TCGA-BLCA` slide features weigh more than 200GB. In comparison, the actual Chowder weights weigh 50MB.
@@ -43,8 +43,8 @@ Now, you can run the experiments reported in the manuscript. The actual computat
 
 ### External validation on TCGA-BLCA (MIBC cases only)
 
-```bash
-python fgfr3mut/run_inference.py \
+```shell
+$ python fgfr3mut/run_inference.py \
     --data_dir <OUTPUT_DIR> \
     --device cpu \  # `cuda:0` if you have a GPU
     --n_tiles 5000 \
@@ -57,36 +57,14 @@ You should obtain the following results, reported in the publication:
 
 | Metric      | Value              |
 | ----------- | -------------------|
-| AUC         | 0.82 [0.74 - 0.88] |
-| Sensitivity | 0.95 [0.92 - 1.00] |
-| Sensitivity | 0.46 [0.35 - 0.69] |
-
-### External validation on TCGA-BLCA (MIBC and NMIBC)
-
-```bash
-python fgfr3mut/run_inference.py \
-    --data_dir <OUTPUT_DIR> \
-    --device cpu \  # `cuda:0` if you have a GPU
-    --n_tiles 5000 \
-    --keep_tcga_cases MIBC NMIBC
-```
-
-Inference on: n_slides=436, n_patients=370.
-
-You should obtain the following results, reported in the publication:
-
-| Metric      | Value              |
-| ----------- | ------------------ |
-| AUC         | 0.86 [0.82 - 0.91] |
-| Sensitivity | 0.93 [0.92 - 0.97] |
-| Specificity | 0.59 [0.39 - 0.70] |
+| AUC         | 0.82 [0.75 - 0.88] |
 
 ### Comparison with Loeffler et al.
 
 To run the external validation on the exact cases reported by [Loeffler et al.](<https://eu-focus.europeanurology.com/article/S2405-4569(21)00113-9/fulltext>), run:
 
-```bash
-python fgfr3mut/run_inference.py \
+```shell
+$ python fgfr3mut/run_inference.py \
     --data_dir <OUTPUT_DIR> \
     --device cpu \  # `cuda:0` if you have a GPU
     --n_tiles 5000 \
@@ -99,6 +77,4 @@ You should obtain the following results, reported in the publication:
 
 | Metric      | Value              |
 | ----------- | ------------------ |
-| AUC         | 0.81 [0.74 - 0.86] |
-| Sensitivity | 0.94 [0.92 - 0.98] |
-| Specificity | 0.41 [0.12 - 0.61] |
+| AUC         | 0.83 [0.76 - 0.88] |
