@@ -11,13 +11,8 @@ from fgfr3mut.utils import load_features_to_mem
 class TCGADataset:
     """TCGA-BLCA dataset for FGFR3 mutation prediction."""
 
-    def __init__(self, data_dir: Path, mpp: float = 0.5):
-        if mpp == 1.0:
-            features_dir = data_dir / "features_mpp10"
-        elif mpp == 0.5:
-            features_dir = data_dir / "features"
-        else:
-            raise ValueError("mpp must be either 1.0 or 0.5")
+    def __init__(self, data_dir: Path):
+        features_dir = data_dir / "features"
         self.features_paths = list(features_dir.glob("**/features.npy"))
 
         self.filtered_slides_path_tcga = data_dir / "filtered_slides_tcga.xlsx"
@@ -43,14 +38,14 @@ class TCGADataset:
         keep_cases: List[Literal["MIBC", "NMIBC"]] = ["MIBC"],
         loeffler_cases: bool = False,
     ) -> pd.Series:
-        """Load FGFR3 mutation status (only MIBC tumors).
+        """Load FGFR3 mutation status.
 
         Parameters
         ----------
         binarize: bool
             Whether to return 0/1 labels or the real classes names.
-        keep_cases: List[Literal["MIBC", "NMIBC"]]  # noqa
-            Which cases to keep
+        keep_cases: List[Literal["MIBC", "NMIBC"]]
+            Which cases to keep.
         loeffler_cases: bool
             Whether to use cases from Loeffler et al. 2021. If True, overrides `keep_cases`.
 

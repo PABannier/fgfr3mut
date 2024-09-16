@@ -148,8 +148,8 @@ def compute_metrics(all_preds: pd.DataFrame, labels: pd.Series) -> pd.DataFrame:
     return all_preds
 
 
-def get_predictions_for_mpp(data_dir: Path, weights_path: Path, mpp: float):
-    dataset = TCGADataset(data_dir, mpp=mpp)
+def get_predictions_for_mpp(data_dir: Path, weights_path: Path):
+    dataset = TCGADataset(data_dir)
 
     X, _, X_slidenames, X_ids = dataset.get_features(
         n_tiles=parser_args.n_tiles,
@@ -172,7 +172,7 @@ def get_predictions_for_mpp(data_dir: Path, weights_path: Path, mpp: float):
 
     print(f"Inference on: n_slides={len(X)}, n_patients={len(set(X_ids))}")
 
-    model = Chowder(in_features=2048, n_extreme=100)
+    model = Chowder(in_features=1536, n_extreme=100)
 
     predictions = infer(
         weights_path=weights_path,
@@ -190,22 +190,13 @@ def get_predictions_for_mpp(data_dir: Path, weights_path: Path, mpp: float):
 def main(parser_args: Namespace):
     """Run inference."""
     data_dir = Path(parser_args.data_dir)
+    weights_dir = Path(parser_args.weights_dir) if parser_args.weights_dir else data_dir / "models"
 
-    print("\n-> Inference at MPP 0.5")
-    predictions_mpp_05, _ = get_predictions_for_mpp(
+    print("\n Launching inference...")
+    all_preds, labels = get_predictions_for_mpp(
         data_dir=data_dir,
-        weights_path=data_dir / "model_weights" / "mpp_05",
-        mpp=0.5,
+        weights_path=weights_dir,
     )
-
-    print("\n-> Inference at MPP 1.0")
-    predictions_mpp_10, labels = get_predictions_for_mpp(
-        data_dir=data_dir,
-        weights_path=data_dir / "model_weights" / "mpp_10",
-        mpp=1.0,
-    )
-
-    all_preds = pd.concat([predictions_mpp_05, predictions_mpp_10], axis=0)
 
     # Compute evaluation metrics with bootstrapping
     all_preds = compute_metrics(all_preds=all_preds, labels=labels)
@@ -228,6 +219,7 @@ def main(parser_args: Namespace):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--data_dir", type=str, required=True)
+    parser.add_argument("--weights_dir", type=str, required=False, help="Path to the directory containing the model weights. If not specified, the weights will be loaded from the `models` subdirectory in the data_dir.")
     parser.add_argument("--device", type=str, default="cuda:0", help="gpu device")
     parser.add_argument(
         "--n_tiles",
