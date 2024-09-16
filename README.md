@@ -81,4 +81,8 @@ You should obtain the following results, reported in the publication:
 
 | Metric      | Value              |
 | ----------- | ------------------ |
-| AUC         | 0.83 [0.76 - 0.88] |
+| AUC         | 0.83 [0.77 - 0.88] |
+| Sensitivity | 0.94 [0.92 - 0.98] |
+| Specificity | 0.44 [0.24 - 0.58] |
+| PPV         | 0.23 [0.17 - 0.30] |
+| NPV         | 0.98 [0.96 - 0.99] |
