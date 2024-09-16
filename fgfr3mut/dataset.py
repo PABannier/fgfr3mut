@@ -12,7 +12,7 @@ class TCGADataset:
     """TCGA-BLCA dataset for FGFR3 mutation prediction."""
 
     def __init__(self, data_dir: Path):
-        features_dir = data_dir / "features_mpp10"
+        features_dir = data_dir / "features"
         self.features_paths = list(features_dir.glob("**/features.npy"))
 
         self.filtered_slides_path_tcga = data_dir / "filtered_slides_tcga.xlsx"
