@@ -7,7 +7,7 @@ from huggingface_hub import snapshot_download
 REPO_ID = "PABannier/fgfr3mut"
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--out-dir", type=str, required=True)
+parser.add_argument("--out_dir", type=str, required=True)
 
 
 if __name__ == "__main__":
