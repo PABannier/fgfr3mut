@@ -2,7 +2,7 @@
 
 ![FGFR3 workflow](./assets/figure.png)
 
-![Publication](https://www.nature.com/articles/s41467-024-55331-6)
+[Publication](https://www.nature.com/articles/s41467-024-55331-6)
 
 This is an official implementation of the FGFR3MUT model. This model is intended for pre-screening tumors of muscle invasive bladder cancer (MIBC) harboring an FGFR3 mutation.
 
